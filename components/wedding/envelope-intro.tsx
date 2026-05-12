@@ -161,7 +161,7 @@ export function EnvelopeIntro({ onOpen }: EnvelopeIntroProps) {
               transition={{ delay: 0.7, duration: 0.8 }}
               className="font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-white mb-2 drop-shadow-lg"
             >
-              Sardorjon
+              {process.env.NEXT_PUBLIC_GROOM_NAME || "Sardorjon"}
             </motion.h1>
 
             <motion.div
@@ -179,7 +179,7 @@ export function EnvelopeIntro({ onOpen }: EnvelopeIntroProps) {
               transition={{ delay: 1.1, duration: 0.8 }}
               className="font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-white mb-6 sm:mb-10 drop-shadow-lg"
             >
-              Fotima
+              {process.env.NEXT_PUBLIC_BRIDE_NAME || "Fotima"}
             </motion.h1>
 
             {/* Bottom ornament */}
@@ -232,7 +232,7 @@ export function EnvelopeIntro({ onOpen }: EnvelopeIntroProps) {
               transition={{ delay: 1.8, duration: 0.8 }}
               className="text-white/50 text-xs sm:text-sm mt-6 sm:mt-8"
             >
-              16 May 2026 | Buxoro
+              {process.env.NEXT_PUBLIC_WEDDING_DATE || "16 May 2026"} | {process.env.NEXT_PUBLIC_WEDDING_CITY_SHORT || "Buxoro"}
             </motion.p>
           </motion.div>
         </motion.div>

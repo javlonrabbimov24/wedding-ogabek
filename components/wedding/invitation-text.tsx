@@ -104,7 +104,7 @@ export function InvitationText() {
             className="relative inline-block"
           >
             <span className="font-serif text-xl sm:text-2xl md:text-3xl text-[var(--gold-dark)] italic text-balance">
-              Hurmat bilan, Sardorjon va Fotima
+              Hurmat bilan, {process.env.NEXT_PUBLIC_GROOM_NAME || "Sardorjon"} va {process.env.NEXT_PUBLIC_BRIDE_NAME || "Fotima"}
             </span>
             {/* Decorative underline */}
             <motion.div

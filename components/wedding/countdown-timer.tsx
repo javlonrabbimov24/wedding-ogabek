@@ -11,7 +11,7 @@ interface TimeLeft {
   seconds: number
 }
 
-const targetDate = new Date("2026-05-16T18:00:00")
+const targetDate = new Date(process.env.NEXT_PUBLIC_WEDDING_TARGET_DATETIME || "2026-05-16T18:00:00")
 
 export function CountdownTimer() {
   const [timeLeft, setTimeLeft] = useState<TimeLeft>({

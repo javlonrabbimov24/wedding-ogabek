@@ -6,7 +6,7 @@ import { MapPin, Clock, Calendar, Navigation, Heart } from "lucide-react"
 export function EventDetails() {
   const openGoogleMaps = () => {
     window.open(
-      "https://maps.google.com/?q=Afrosiyob+restoran+Kogon+Buxoro",
+      process.env.NEXT_PUBLIC_GOOGLE_MAPS_URL || "https://maps.google.com/?q=Afrosiyob+restoran+Kogon+Buxoro",
       "_blank"
     )
   }
@@ -79,7 +79,7 @@ export function EventDetails() {
                   </motion.div>
                   <div>
                     <h3 className="font-serif text-xl sm:text-2xl text-foreground">Sana</h3>
-                    <p className="text-base sm:text-lg text-muted-foreground">16 May, 2026-yil</p>
+                    <p className="text-base sm:text-lg text-muted-foreground">{process.env.NEXT_PUBLIC_WEDDING_DATE_UZ || "16 May, 2026-yil"}</p>
                   </div>
                 </div>
 
@@ -92,7 +92,7 @@ export function EventDetails() {
                   </motion.div>
                   <div>
                     <h3 className="font-serif text-xl sm:text-2xl text-foreground">Vaqti</h3>
-                    <p className="text-base sm:text-lg text-muted-foreground">18:00 dan boshlab</p>
+                    <p className="text-base sm:text-lg text-muted-foreground">{process.env.NEXT_PUBLIC_WEDDING_TIME_ONLY || "18:00 dan boshlab"}</p>
                   </div>
                 </div>
               </div>
@@ -127,7 +127,7 @@ export function EventDetails() {
                   <div>
                     <h3 className="font-serif text-xl sm:text-2xl text-foreground">Manzil</h3>
                     <p className="text-base sm:text-lg text-muted-foreground">
-                      Afrosiyob restorani, Kogon shahri, Buxoro viloyati
+                      {process.env.NEXT_PUBLIC_WEDDING_ADDRESS || "Afrosiyob restorani, Kogon shahri, Buxoro viloyati"}
                     </p>
                   </div>
                 </div>

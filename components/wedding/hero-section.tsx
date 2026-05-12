@@ -120,7 +120,7 @@ export function HeroSection() {
           transition={{ duration: 1.2, delay: 0.7 }}
           className="font-serif text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl text-foreground mb-1 sm:mb-2 drop-shadow-sm"
         >
-          Sardorjon
+          {process.env.NEXT_PUBLIC_GROOM_NAME || "Sardorjon"}
         </motion.h1>
 
         <motion.div
@@ -140,7 +140,7 @@ export function HeroSection() {
           transition={{ duration: 1.2, delay: 1.2 }}
           className="font-serif text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl text-foreground mb-6 sm:mb-8 drop-shadow-sm"
         >
-          Fotima
+          {process.env.NEXT_PUBLIC_BRIDE_NAME || "Fotima"}
         </motion.h1>
 
         {/* Bottom ornament */}
@@ -161,7 +161,7 @@ export function HeroSection() {
           transition={{ duration: 0.8, delay: 1.7 }}
           className="text-muted-foreground text-lg sm:text-xl md:text-2xl tracking-wide"
         >
-          16 May 2026
+          {process.env.NEXT_PUBLIC_WEDDING_DATE || "16 May 2026"}
         </motion.p>
 
         <motion.p
@@ -170,7 +170,7 @@ export function HeroSection() {
           transition={{ duration: 0.8, delay: 1.9 }}
           className="text-[var(--gold-dark)] text-base sm:text-lg mt-1 sm:mt-2"
         >
-          Shanba | Soat 18:00
+          {process.env.NEXT_PUBLIC_WEDDING_DAY_TIME || "Shanba | Soat 18:00"}
         </motion.p>
       </motion.div>
 

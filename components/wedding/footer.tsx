@@ -43,7 +43,7 @@ export function Footer() {
         >
           {/* Names */}
           <h3 className="font-serif text-3xl sm:text-4xl md:text-5xl text-white mb-4 sm:mb-6">
-            Sardorjon & Fotima
+            {process.env.NEXT_PUBLIC_GROOM_NAME || "Sardorjon"} & {process.env.NEXT_PUBLIC_BRIDE_NAME || "Fotima"}
           </h3>
           
           {/* Heart divider */}
@@ -59,9 +59,9 @@ export function Footer() {
           </div>
 
           {/* Date and location */}
-          <p className="text-[var(--gold)] text-lg sm:text-xl mb-1 sm:mb-2 font-medium">16 May, 2026</p>
+          <p className="text-[var(--gold)] text-lg sm:text-xl mb-1 sm:mb-2 font-medium">{process.env.NEXT_PUBLIC_WEDDING_DATE_FORMATTED || "16 May, 2026"}</p>
           <p className="text-white/60 text-base sm:text-lg">
-            Buxoro, O&apos;zbekiston
+            {process.env.NEXT_PUBLIC_WEDDING_CITY || "Buxoro, O'zbekiston"}
           </p>
 
           {/* Bottom text */}
