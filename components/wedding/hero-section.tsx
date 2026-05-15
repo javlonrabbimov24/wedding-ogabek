@@ -111,7 +111,6 @@ export function HeroSection() {
           transition={{ duration: 0.8, delay: 0.5 }}
           className="text-[var(--gold-dark)] tracking-[0.25em] sm:tracking-[0.35em] md:tracking-[0.4em] uppercase text-[10px] sm:text-xs md:text-sm mb-4 sm:mb-6"
         >
-          Biz turmush quramiz
         </motion.p>
 
         <motion.h1

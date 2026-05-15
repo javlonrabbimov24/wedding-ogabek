@@ -73,7 +73,7 @@ export function Footer() {
             transition={{ delay: 0.5 }}
           >
             <p className="text-white/40 text-xs sm:text-sm flex items-center justify-center gap-1.5 sm:gap-2">
-              Muhabbat bilan yaratildi <Heart className="w-3 h-3 sm:w-4 sm:h-4 text-red-400" fill="currentColor" />
+              A <Heart className="w-3 h-3 sm:w-4 sm:h-4 text-red-400" fill="currentColor" /> S
             </p>
           </motion.div>
         </motion.div>
