@@ -1,157 +1,224 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { MapPin, Clock, Calendar, Navigation, Heart } from "lucide-react"
+import { MapPin, Calendar, Heart, Navigation } from "lucide-react"
+import { QRCodeSVG } from "qrcode.react"
 
-export function EventDetails() {
-  const openGoogleMaps = () => {
-    window.open(
-      process.env.NEXT_PUBLIC_GOOGLE_MAPS_URL || "https://maps.google.com/?q=Afrosiyob+restoran+Kogon+Buxoro",
-      "_blank"
-    )
+interface EventCardProps {
+  num: string
+  tag: string
+  date: string
+  year: string
+  venue: string
+  place: string
+  mapsUrl: string
+  calDate: string
+  delay?: number
+}
+
+function EventCard({ num, tag, date, year, venue, place, mapsUrl, calDate, delay = 0 }: EventCardProps) {
+  const openMaps = () => window.open(mapsUrl, "_blank")
+
+  const downloadIcs = () => {
+    const title = `${process.env.NEXT_PUBLIC_GROOM_NAME || "Javlon"} & ${process.env.NEXT_PUBLIC_BRIDE_NAME || "Nargiza"} — ${venue}`
+    const ics = [
+      "BEGIN:VCALENDAR",
+      "VERSION:2.0",
+      "PRODID:-//Wedding//UZ",
+      "BEGIN:VEVENT",
+      `UID:${calDate}-wedding@toy`,
+      `DTSTART;VALUE=DATE:${calDate}`,
+      `DTEND;VALUE=DATE:${String(Number(calDate) + 1)}`,
+      `SUMMARY:${title}`,
+      `LOCATION:${venue}, ${place}`,
+      "DESCRIPTION:Nikoh marosimiga taklif",
+      "END:VEVENT",
+      "END:VCALENDAR",
+    ].join("\r\n")
+
+    const blob = new Blob([ics], { type: "text/calendar;charset=utf-8" })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement("a")
+    a.href = url
+    a.download = `toy-${calDate}.ics`
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+    setTimeout(() => URL.revokeObjectURL(url), 1000)
   }
 
   return (
-    <section className="relative py-16 sm:py-20 md:py-28 lg:py-36 overflow-hidden">
-      {/* Background */}
-      <div className="absolute inset-0 bg-gradient-to-b from-white via-[var(--cream)] to-white" />
-      
-      {/* Decorative circles - hidden on mobile */}
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.8, delay }}
+    >
       <motion.div
-        className="absolute -top-10 sm:-top-20 -right-10 sm:-right-20 w-32 h-32 sm:w-48 sm:h-48 md:w-64 md:h-64 border border-[var(--gold)]/10 rounded-full hidden sm:block"
+        whileHover={{ y: -6 }}
+        transition={{ type: "spring", stiffness: 300 }}
+        className="relative bg-white rounded-[1.2rem] border border-[#e0c486]/55 overflow-hidden flex flex-col items-center text-center"
+        style={{
+          padding: "clamp(1.6rem,4vw,2.6rem) clamp(1.4rem,4vw,2.4rem)",
+          boxShadow: "0 18px 44px rgba(154,116,48,.12)",
+        }}
+      >
+        {/* Corner accents */}
+        <span className="absolute top-0 left-0 w-[4.5rem] h-[4.5rem] border-t-2 border-l-2 border-[#c9a050] rounded-tl-[1.2rem]" />
+        <span className="absolute bottom-0 right-0 w-[4.5rem] h-[4.5rem] border-b-2 border-r-2 border-[#c9a050] rounded-br-[1.2rem]" />
+
+        {/* Event number */}
+        <div className="w-12 h-12 rounded-full border-[1.5px] border-[#c9a050] flex items-center justify-center mb-4 font-serif text-[#9a7430] text-xl">
+          {num}
+        </div>
+
+        <div className="text-[#9a7430] uppercase tracking-[0.26em] text-[0.72rem] font-semibold mb-4">
+          {tag}
+        </div>
+
+        <div className="font-serif text-foreground" style={{ fontSize: "clamp(2rem,7vw,2.9rem)", lineHeight: 1 }}>
+          {date}
+          <span className="block text-[#9a7430] tracking-[0.3em] mt-2" style={{ fontSize: "0.42em" }}>
+            {year}
+          </span>
+        </div>
+
+        <div className="w-16 h-px bg-gradient-to-r from-transparent via-[#c9a050] to-transparent my-5" />
+
+        <div className="font-serif text-foreground mb-1" style={{ fontSize: "clamp(1.3rem,3.6vw,1.7rem)" }}>
+          {venue}
+        </div>
+
+        <div className="text-muted-foreground flex items-center gap-1 justify-center mb-6" style={{ fontSize: "clamp(1rem,2.6vw,1.15rem)" }}>
+          <MapPin className="w-4 h-4 flex-shrink-0 text-[#c9a050]" />
+          {place}
+        </div>
+
+        {/* QR kod */}
+        <div className="mb-2 p-3 border border-[#e0c486]/70 rounded-xl bg-white">
+          <QRCodeSVG
+            value={mapsUrl}
+            size={120}
+            bgColor="#ffffff"
+            fgColor="#16213e"
+            level="M"
+          />
+        </div>
+        <p className="text-muted-foreground text-xs tracking-wide mb-5">
+          Manzilni QR orqali oching
+        </p>
+
+        {/* Buttons */}
+        <div className="flex flex-col gap-3 w-full mt-auto">
+          <motion.button
+            onClick={openMaps}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            className="relative w-full py-4 rounded-[.8rem] overflow-hidden border-none cursor-pointer"
+          >
+            <span className="absolute inset-0 bg-gradient-to-r from-[#9a7430] via-[#c9a050] to-[#9a7430]" />
+            <motion.span
+              className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
+              animate={{ x: ["-200%", "200%"] }}
+              transition={{ duration: 3, repeat: Infinity, repeatDelay: 0 }}
+            />
+            <span className="relative z-10 flex items-center justify-center gap-2 text-white font-semibold text-base">
+              <Navigation className="w-4 h-4" />
+              Google xaritada ko&apos;rish
+            </span>
+          </motion.button>
+
+          <motion.button
+            onClick={downloadIcs}
+            whileHover={{ backgroundColor: "#c9a050", color: "#fff" }}
+            className="w-full py-[.85rem] rounded-[.8rem] border-[1.5px] border-[#c9a050] bg-transparent text-[#9a7430] font-semibold text-base flex items-center justify-center gap-2 cursor-pointer transition-colors duration-200"
+          >
+            <Calendar className="w-4 h-4" />
+            Kalendarga qo&apos;shish
+          </motion.button>
+        </div>
+      </motion.div>
+    </motion.div>
+  )
+}
+
+export function EventDetails() {
+  return (
+    <section className="relative py-16 sm:py-20 md:py-28 lg:py-36 overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-b from-white via-[var(--cream)] to-white" />
+
+      {/* Dot pattern */}
+      <div
+        className="absolute inset-0 opacity-[0.04]"
+        style={{
+          backgroundImage: "radial-gradient(circle at 2px 2px, #c9a050 1px, transparent 0)",
+          backgroundSize: "32px 32px",
+        }}
+      />
+
+      {/* Decorative circles */}
+      <motion.div
+        className="absolute -top-20 -right-20 w-64 h-64 border border-[#c9a050]/10 rounded-full hidden sm:block"
         animate={{ rotate: 360 }}
         transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
       />
       <motion.div
-        className="absolute -bottom-10 sm:-bottom-20 -left-10 sm:-left-20 w-40 h-40 sm:w-60 sm:h-60 md:w-80 md:h-80 border border-[var(--gold)]/10 rounded-full hidden sm:block"
+        className="absolute -bottom-20 -left-20 w-80 h-80 border border-[#c9a050]/10 rounded-full hidden sm:block"
         animate={{ rotate: -360 }}
         transition={{ duration: 80, repeat: Infinity, ease: "linear" }}
       />
 
-      <div className="container relative z-10 mx-auto px-4 sm:px-6 max-w-5xl">
+      <div className="relative z-10 mx-auto px-4 sm:px-6 max-w-5xl">
+        {/* Heading */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-50px" }}
           transition={{ duration: 0.8 }}
-          className="text-center mb-10 sm:mb-12 md:mb-16"
+          className="text-center mb-12 md:mb-16"
         >
           <motion.div
             initial={{ scale: 0 }}
             whileInView={{ scale: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
-            className="mb-4 sm:mb-6"
+            className="mb-5"
           >
-            <Heart className="w-6 h-6 sm:w-8 sm:h-8 mx-auto text-[var(--gold)]" fill="currentColor" />
+            <Heart className="w-8 h-8 mx-auto text-[#c9a050]" fill="currentColor" />
           </motion.div>
-          <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-foreground mb-3 sm:mb-4 text-balance">
-            To&apos;y Ma&apos;lumotlari
+          <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl text-foreground mb-4">
+            To&apos;y Marosimlari
           </h2>
-          <div className="w-16 sm:w-20 md:w-24 h-px bg-gradient-to-r from-transparent via-[var(--gold)] to-transparent mx-auto" />
+          <p className="text-muted-foreground text-base sm:text-lg mb-4">
+            To&apos;yimiz ikki shaharda — ikki marosimda nishonlanadi
+          </p>
+          <div className="w-24 h-px bg-gradient-to-r from-transparent via-[#c9a050] to-transparent mx-auto" />
         </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-4 sm:gap-6 md:gap-8 mb-8 sm:mb-12">
-          {/* Date & Time Card */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="group"
-          >
-            <motion.div
-              whileHover={{ y: -5 }}
-              transition={{ type: "spring", stiffness: 300 }}
-              className="relative bg-white p-5 sm:p-6 md:p-8 lg:p-10 rounded-xl sm:rounded-2xl shadow-lg border border-[var(--gold-light)]/50 overflow-hidden"
-            >
-              {/* Card decoration */}
-              <div className="absolute top-0 left-0 w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 border-t-2 border-l-2 border-[var(--gold)] rounded-tl-xl sm:rounded-tl-2xl" />
-              <div className="absolute bottom-0 right-0 w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 border-b-2 border-r-2 border-[var(--gold)] rounded-br-xl sm:rounded-br-2xl" />
-              
-              <div className="relative z-10">
-                <div className="flex items-center gap-3 sm:gap-4 md:gap-5 mb-5 sm:mb-6 md:mb-8">
-                  <motion.div
-                    whileHover={{ scale: 1.1, rotate: 10 }}
-                    className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-full bg-gradient-to-br from-[var(--gold-light)] to-[var(--gold)] flex items-center justify-center shadow-md flex-shrink-0"
-                  >
-                    <Calendar className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 text-white" />
-                  </motion.div>
-                  <div>
-                    <h3 className="font-serif text-xl sm:text-2xl text-foreground">Sana</h3>
-                    <p className="text-base sm:text-lg text-muted-foreground">{process.env.NEXT_PUBLIC_WEDDING_DATE_UZ || "16 May, 2026-yil"}</p>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-3 sm:gap-4 md:gap-5">
-                  <motion.div
-                    whileHover={{ scale: 1.1, rotate: -10 }}
-                    className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-full bg-gradient-to-br from-[var(--gold-light)] to-[var(--gold)] flex items-center justify-center shadow-md flex-shrink-0"
-                  >
-                    <Clock className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 text-white" />
-                  </motion.div>
-                  <div>
-                    <h3 className="font-serif text-xl sm:text-2xl text-foreground">Vaqti</h3>
-                    <p className="text-base sm:text-lg text-muted-foreground">{process.env.NEXT_PUBLIC_WEDDING_TIME_ONLY || "18:00 dan boshlab"}</p>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          </motion.div>
-
-          {/* Location Card */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="group"
-          >
-            <motion.div
-              whileHover={{ y: -5 }}
-              transition={{ type: "spring", stiffness: 300 }}
-              className="relative bg-white p-5 sm:p-6 md:p-8 lg:p-10 rounded-xl sm:rounded-2xl shadow-lg border border-[var(--gold-light)]/50 overflow-hidden h-full flex flex-col"
-            >
-              {/* Card decoration */}
-              <div className="absolute top-0 right-0 w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 border-t-2 border-r-2 border-[var(--gold)] rounded-tr-xl sm:rounded-tr-2xl" />
-              <div className="absolute bottom-0 left-0 w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 border-b-2 border-l-2 border-[var(--gold)] rounded-bl-xl sm:rounded-bl-2xl" />
-              
-              <div className="relative z-10 flex-1">
-                <div className="flex items-start gap-3 sm:gap-4 md:gap-5 mb-5 sm:mb-6 md:mb-8">
-                  <motion.div
-                    whileHover={{ scale: 1.1 }}
-                    className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-full bg-gradient-to-br from-[var(--gold-light)] to-[var(--gold)] flex items-center justify-center shadow-md flex-shrink-0"
-                  >
-                    <MapPin className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 text-white" />
-                  </motion.div>
-                  <div>
-                    <h3 className="font-serif text-xl sm:text-2xl text-foreground">Manzil</h3>
-                    <p className="text-base sm:text-lg text-muted-foreground">
-                      {process.env.NEXT_PUBLIC_WEDDING_ADDRESS || "Afrosiyob restorani, Kogon shahri, Buxoro viloyati"}
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <motion.button
-                onClick={openGoogleMaps}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="relative w-full py-3 sm:py-4 rounded-lg sm:rounded-xl overflow-hidden group cursor-pointer"
-              >
-                <span className="absolute inset-0 bg-gradient-to-r from-[var(--gold-dark)] via-[var(--gold)] to-[var(--gold-dark)]" />
-                <motion.span
-                  className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
-                  animate={{ x: ["-100%", "100%"] }}
-                  transition={{ duration: 2, repeat: Infinity, repeatDelay: 1 }}
-                />
-                <span className="relative z-10 flex items-center justify-center gap-2 text-white font-medium text-sm sm:text-base">
-                  <Navigation className="w-4 h-4 sm:w-5 sm:h-5" />
-                  Google xaritada ko&apos;rish
-                </span>
-              </motion.button>
-            </motion.div>
-          </motion.div>
+        {/* Two event cards */}
+        <div className="grid md:grid-cols-2 gap-6 md:gap-8">
+          <EventCard
+            num="I"
+            tag="Birinchi marosim"
+            date={process.env.NEXT_PUBLIC_EVENT1_DATE || "06.06"}
+            year={process.env.NEXT_PUBLIC_EVENT1_YEAR || "2026-yil"}
+            venue={process.env.NEXT_PUBLIC_EVENT1_VENUE || "Oqsaroy to'yxonasi"}
+            place={process.env.NEXT_PUBLIC_EVENT1_PLACE || "Buxoro viloyati, Romitan tumani"}
+            mapsUrl={process.env.NEXT_PUBLIC_EVENT1_MAPS_URL || "https://www.google.com/maps/search/?api=1&query=Romitan+Buxoro"}
+            calDate="20260606"
+            delay={0.2}
+          />
+          <EventCard
+            num="II"
+            tag="Ikkinchi marosim"
+            date={process.env.NEXT_PUBLIC_EVENT2_DATE || "13.06"}
+            year={process.env.NEXT_PUBLIC_EVENT2_YEAR || "2026-yil"}
+            venue={process.env.NEXT_PUBLIC_EVENT2_VENUE || "Shohsaroy to'yxonasi"}
+            place={process.env.NEXT_PUBLIC_EVENT2_PLACE || "Navoiy viloyati, Karmana tumani"}
+            mapsUrl={process.env.NEXT_PUBLIC_EVENT2_MAPS_URL || "https://www.google.com/maps/search/?api=1&query=Karmana+Navoiy"}
+            calDate="20260613"
+            delay={0.4}
+          />
         </div>
       </div>
     </section>

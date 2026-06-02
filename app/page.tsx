@@ -4,9 +4,9 @@ import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { EnvelopeIntro } from "@/components/wedding/envelope-intro"
 import { HeroSection } from "@/components/wedding/hero-section"
-import { CountdownTimer } from "@/components/wedding/countdown-timer"
 import { InvitationText } from "@/components/wedding/invitation-text"
 import { EventDetails } from "@/components/wedding/event-details"
+import { Guestbook } from "@/components/wedding/guestbook"
 import { Footer } from "@/components/wedding/footer"
 
 export default function WeddingInvitation() {
@@ -14,10 +14,8 @@ export default function WeddingInvitation() {
 
   return (
     <main className="min-h-screen">
-      {/* Envelope Intro - shown initially */}
       {!isOpened && <EnvelopeIntro onOpen={() => setIsOpened(true)} />}
 
-      {/* Main content - shown after opening */}
       <AnimatePresence>
         {isOpened && (
           <motion.div
@@ -26,9 +24,9 @@ export default function WeddingInvitation() {
             transition={{ duration: 1, delay: 0.5 }}
           >
             <HeroSection />
-            <CountdownTimer />
             <InvitationText />
             <EventDetails />
+            <Guestbook />
             <Footer />
           </motion.div>
         )}

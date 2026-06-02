@@ -17,8 +17,8 @@ const cormorant = Cormorant_Garamond({
 })
 
 export const metadata: Metadata = {
-  title: 'Azizbek & Saodatxon | Nikoh Taklifnomasi',
-  description: 'Sizni to\'yimizga taklif qilamiz! Qo\'qon, 22 May 2026',
+  title: 'Javlon & Nargiza | Nikoh Taklifnomasi',
+  description: "Sizni to'yimizga taklif qilamiz! 06.06.2026 — Buxoro | 13.06.2026 — Navoiy",
   generator: 'v0.app',
   icons: {
     icon: [

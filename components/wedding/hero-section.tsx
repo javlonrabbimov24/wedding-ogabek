@@ -1,84 +1,68 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { Heart, Sparkles } from "lucide-react"
+import { Heart } from "lucide-react"
 import { useEffect, useState } from "react"
 
 export function HeroSection() {
   const [floatingHearts, setFloatingHearts] = useState<Array<{ id: number; x: number; delay: number; duration: number }>>([])
 
   useEffect(() => {
-    const hearts = Array.from({ length: 15 }, (_, i) => ({
+    const hearts = Array.from({ length: 14 }, (_, i) => ({
       id: i,
-      x: 5 + (i * 6.5),
+      x: 4 + i * 6.8,
       delay: i * 0.5,
-      duration: 10 + Math.random() * 5,
+      duration: 10 + Math.random() * 6,
     }))
     setFloatingHearts(hearts)
   }, [])
 
+  const groomName = process.env.NEXT_PUBLIC_GROOM_NAME || "Javlon"
+  const brideName = process.env.NEXT_PUBLIC_BRIDE_NAME || "Nargiza"
+  const event1Date = process.env.NEXT_PUBLIC_EVENT1_FULL_DATE || "06.06.2026"
+  const event1Place = process.env.NEXT_PUBLIC_EVENT1_PLACE || "Buxoro viloyati"
+  const event2Date = process.env.NEXT_PUBLIC_EVENT2_FULL_DATE || "13.06.2026"
+  const event2Place = process.env.NEXT_PUBLIC_EVENT2_PLACE || "Navoiy viloyati"
+
   return (
     <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden px-4">
-      {/* Animated Background */}
-      <div className="absolute inset-0">
-        <div className="absolute inset-0 bg-gradient-to-b from-[var(--cream)] via-white to-[var(--cream)]" />
-        
+      {/* Background */}
+      <div className="absolute inset-0 bg-gradient-to-b from-[var(--cream)] via-white to-[var(--cream)]">
         {/* Floating hearts */}
         {floatingHearts.map((heart) => (
           <motion.div
             key={heart.id}
-            className="absolute text-[var(--gold)]/20"
-            style={{ left: `${heart.x}%` }}
+            className="absolute text-[#c9a050]/18"
+            style={{ left: `${heart.x}%`, width: 20, height: 20 }}
             initial={{ y: "110vh" }}
-            animate={{ y: "-10vh", rotate: [0, 15, -15, 0] }}
-            transition={{
-              duration: heart.duration,
-              repeat: Infinity,
-              delay: heart.delay,
-              ease: "linear",
-            }}
+            animate={{ y: "-12vh", rotate: [0, 15, -15, 0] }}
+            transition={{ duration: heart.duration, repeat: Infinity, delay: heart.delay, ease: "linear" }}
           >
-            <Heart className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5" fill="currentColor" />
+            <Heart className="w-5 h-5" fill="currentColor" />
           </motion.div>
         ))}
-        
-        {/* Golden decorative circles */}
+
+        {/* Decorative rings */}
         <motion.div
-          className="absolute top-10 sm:top-20 left-5 sm:left-10 w-20 h-20 sm:w-24 sm:h-24 md:w-32 md:h-32 border border-[var(--gold)]/20 rounded-full"
-          animate={{ scale: [1, 1.15, 1], opacity: [0.2, 0.4, 0.2] }}
+          className="absolute top-[12%] left-[6%] w-32 h-32 border border-[#c9a050]/25 rounded-full"
+          animate={{ scale: [1, 1.2, 1], opacity: [0.25, 0.5, 0.25] }}
           transition={{ duration: 5, repeat: Infinity }}
         />
         <motion.div
-          className="absolute top-20 sm:top-40 right-5 sm:right-10 w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 border border-[var(--gold)]/30 rounded-full"
-          animate={{ scale: [1, 1.25, 1], opacity: [0.3, 0.5, 0.3] }}
-          transition={{ duration: 4, repeat: Infinity, delay: 0.5 }}
+          className="absolute top-[24%] right-[7%] w-20 h-20 border border-[#c9a050]/25 rounded-full"
+          animate={{ scale: [1, 1.25, 1], opacity: [0.25, 0.5, 0.25] }}
+          transition={{ duration: 5, repeat: Infinity, delay: 0.5 }}
         />
         <motion.div
-          className="absolute bottom-20 sm:bottom-40 left-[15%] sm:left-1/4 w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16 border border-[var(--gold)]/25 rounded-full"
-          animate={{ scale: [1, 1.2, 1], opacity: [0.25, 0.45, 0.25] }}
-          transition={{ duration: 4.5, repeat: Infinity, delay: 1 }}
+          className="absolute bottom-[24%] left-[18%] w-16 h-16 border border-[#c9a050]/25 rounded-full"
+          animate={{ scale: [1, 1.2, 1], opacity: [0.25, 0.5, 0.25] }}
+          transition={{ duration: 5, repeat: Infinity, delay: 1 }}
         />
         <motion.div
-          className="absolute bottom-32 right-[20%] w-8 h-8 sm:w-10 sm:h-10 border border-[var(--gold)]/20 rounded-full"
+          className="absolute bottom-[30%] right-[20%] w-12 h-12 border border-[#c9a050]/25 rounded-full"
           animate={{ scale: [1, 1.3, 1] }}
           transition={{ duration: 5, repeat: Infinity, delay: 1.5 }}
         />
-
-        {/* Sparkles decoration */}
-        <motion.div
-          className="absolute top-1/3 left-[10%] text-[var(--gold)]/30"
-          animate={{ rotate: 360, scale: [1, 1.2, 1] }}
-          transition={{ rotate: { duration: 15, repeat: Infinity }, scale: { duration: 3, repeat: Infinity } }}
-        >
-          <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" />
-        </motion.div>
-        <motion.div
-          className="absolute bottom-1/3 right-[10%] text-[var(--gold)]/30"
-          animate={{ rotate: -360, scale: [1, 1.2, 1] }}
-          transition={{ rotate: { duration: 18, repeat: Infinity }, scale: { duration: 3.5, repeat: Infinity, delay: 1 } }}
-        >
-          <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" />
-        </motion.div>
       </div>
 
       {/* Main Content */}
@@ -93,53 +77,50 @@ export function HeroSection() {
           initial={{ scaleX: 0 }}
           animate={{ scaleX: 1 }}
           transition={{ duration: 1.2, delay: 0.3 }}
-          className="flex items-center justify-center gap-2 sm:gap-3 md:gap-4 mb-6 sm:mb-8 md:mb-10"
+          className="flex items-center justify-center gap-3 mb-9"
         >
-          <div className="w-10 sm:w-16 md:w-24 lg:w-32 h-px bg-gradient-to-r from-transparent to-[var(--gold)]" />
+          <div className="h-px bg-gradient-to-r from-transparent to-[#c9a050]" style={{ width: "clamp(2.5rem,8vw,8rem)" }} />
           <motion.div
-            animate={{ rotate: 360, scale: [1, 1.2, 1] }}
-            transition={{ rotate: { duration: 20, repeat: Infinity, ease: "linear" }, scale: { duration: 2, repeat: Infinity } }}
+            animate={{ scale: [1, 1.3, 1], rotate: [0, 360, 0] }}
+            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
           >
-            <Heart className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 text-[var(--gold)]" fill="currentColor" />
+            <Heart className="w-6 h-6 text-[#c9a050]" fill="currentColor" />
           </motion.div>
-          <div className="w-10 sm:w-16 md:w-24 lg:w-32 h-px bg-gradient-to-l from-transparent to-[var(--gold)]" />
+          <div className="h-px bg-gradient-to-l from-transparent to-[#c9a050]" style={{ width: "clamp(2.5rem,8vw,8rem)" }} />
         </motion.div>
 
-        <motion.p
-          initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.5 }}
-          className="text-[var(--gold-dark)] tracking-[0.25em] sm:tracking-[0.35em] md:tracking-[0.4em] uppercase text-[10px] sm:text-xs md:text-sm mb-4 sm:mb-6"
-        >
-        </motion.p>
-
+        {/* Groom name */}
         <motion.h1
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.2, delay: 0.7 }}
-          className="font-serif text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl text-foreground mb-1 sm:mb-2 drop-shadow-sm"
+          className="font-serif text-foreground font-semibold"
+          style={{ fontSize: "clamp(3.4rem, 13vw, 8.5rem)", lineHeight: 1 }}
         >
-          {process.env.NEXT_PUBLIC_GROOM_NAME || "Sardorjon"}
+          {groomName}
         </motion.h1>
 
+        {/* Ampersand row */}
         <motion.div
           initial={{ opacity: 0, scale: 0 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, delay: 1 }}
-          className="flex items-center justify-center gap-2 sm:gap-3 md:gap-4 my-4 sm:my-5 md:my-6"
+          className="flex items-center justify-center gap-4 my-4"
         >
-          <div className="w-8 sm:w-12 md:w-16 lg:w-20 h-px bg-[var(--gold)]" />
-          <span className="text-[var(--gold)] text-3xl sm:text-4xl md:text-5xl font-serif">&amp;</span>
-          <div className="w-8 sm:w-12 md:w-16 lg:w-20 h-px bg-[var(--gold)]" />
+          <div className="h-px bg-[#c9a050]" style={{ width: "clamp(2rem,6vw,5rem)" }} />
+          <span className="text-[#c9a050] font-serif" style={{ fontSize: "clamp(2rem,6vw,3rem)" }}>&amp;</span>
+          <div className="h-px bg-[#c9a050]" style={{ width: "clamp(2rem,6vw,5rem)" }} />
         </motion.div>
 
+        {/* Bride name */}
         <motion.h1
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.2, delay: 1.2 }}
-          className="font-serif text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl text-foreground mb-6 sm:mb-8 drop-shadow-sm"
+          className="font-serif text-foreground font-semibold mb-8"
+          style={{ fontSize: "clamp(3.4rem, 13vw, 8.5rem)", lineHeight: 1 }}
         >
-          {process.env.NEXT_PUBLIC_BRIDE_NAME || "Fotima"}
+          {brideName}
         </motion.h1>
 
         {/* Bottom ornament */}
@@ -147,30 +128,38 @@ export function HeroSection() {
           initial={{ scaleX: 0 }}
           animate={{ scaleX: 1 }}
           transition={{ duration: 1.2, delay: 1.5 }}
-          className="flex items-center justify-center gap-2 sm:gap-3 md:gap-4 mt-6 sm:mt-8 mb-4 sm:mb-6"
+          className="flex items-center justify-center gap-3 mb-7"
         >
-          <div className="w-10 sm:w-16 md:w-24 lg:w-32 h-px bg-gradient-to-r from-transparent to-[var(--gold)]" />
-          <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-[var(--gold)] rotate-45" />
-          <div className="w-10 sm:w-16 md:w-24 lg:w-32 h-px bg-gradient-to-l from-transparent to-[var(--gold)]" />
+          <div className="h-px bg-gradient-to-r from-transparent to-[#c9a050]" style={{ width: "clamp(2.5rem,8vw,8rem)" }} />
+          <div className="w-2 h-2 bg-[#c9a050] rotate-45" />
+          <div className="h-px bg-gradient-to-l from-transparent to-[#c9a050]" style={{ width: "clamp(2.5rem,8vw,8rem)" }} />
         </motion.div>
 
-        <motion.p
+        {/* Two event dates */}
+        <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 1.7 }}
-          className="text-muted-foreground text-lg sm:text-xl md:text-2xl tracking-wide"
+          className="flex items-center justify-center flex-wrap gap-x-10 gap-y-3"
         >
-          {process.env.NEXT_PUBLIC_WEDDING_DATE || "16 May 2026"}
-        </motion.p>
-
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8, delay: 1.9 }}
-          className="text-[var(--gold-dark)] text-base sm:text-lg mt-1 sm:mt-2"
-        >
-          {process.env.NEXT_PUBLIC_WEDDING_DAY_TIME || "Shanba | Soat 18:00"}
-        </motion.p>
+          <div className="text-center">
+            <div className="font-serif text-foreground" style={{ fontSize: "clamp(1.3rem,4vw,1.9rem)" }}>
+              {event1Date}
+            </div>
+            <div className="text-[#9a7430] uppercase tracking-[0.12em] mt-1" style={{ fontSize: "clamp(0.9rem,2.4vw,1.05rem)" }}>
+              {event1Place.split(",")[0]}
+            </div>
+          </div>
+          <div className="w-px h-10 bg-[#c9a050]/50" />
+          <div className="text-center">
+            <div className="font-serif text-foreground" style={{ fontSize: "clamp(1.3rem,4vw,1.9rem)" }}>
+              {event2Date}
+            </div>
+            <div className="text-[#9a7430] uppercase tracking-[0.12em] mt-1" style={{ fontSize: "clamp(0.9rem,2.4vw,1.05rem)" }}>
+              {event2Place.split(",")[0]}
+            </div>
+          </div>
+        </motion.div>
       </motion.div>
 
       {/* Scroll indicator */}
@@ -178,19 +167,19 @@ export function HeroSection() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 2.5, duration: 1 }}
-        className="absolute bottom-6 sm:bottom-8 md:bottom-10 left-1/2 -translate-x-1/2"
+        className="absolute bottom-8 left-1/2 -translate-x-1/2"
       >
         <motion.div
           animate={{ y: [0, 8, 0] }}
           transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-          className="flex flex-col items-center gap-1.5 sm:gap-2"
+          className="flex flex-col items-center gap-2"
         >
-          <span className="text-xs sm:text-sm text-muted-foreground tracking-wider">Pastga</span>
-          <div className="w-5 h-8 sm:w-6 sm:h-10 border-2 border-[var(--gold)]/50 rounded-full flex justify-center pt-1.5 sm:pt-2">
+          <span className="text-sm text-muted-foreground tracking-widest">Pastga</span>
+          <div className="w-6 h-9 border-2 border-[#c9a050]/50 rounded-full flex justify-center pt-2">
             <motion.div
               animate={{ y: [0, 10, 0] }}
               transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-              className="w-1 h-1 sm:w-1.5 sm:h-1.5 bg-[var(--gold)] rounded-full"
+              className="w-1.5 h-1.5 bg-[#c9a050] rounded-full"
             />
           </div>
         </motion.div>
