@@ -11,7 +11,15 @@ interface TimeLeft {
   seconds: number
 }
 
-const targetDate = new Date(process.env.NEXT_PUBLIC_WEDDING_TARGET_DATETIME || "2026-05-16T18:00:00")
+function parseTargetDate(fullDate: string, time: string) {
+  const [day, month, year] = fullDate.split(".")
+  return new Date(`${year}-${month}-${day}T${time}:00`)
+}
+
+const targetDate = parseTargetDate(
+  process.env.NEXT_PUBLIC_EVENT1_FULL_DATE || "06.06.2026",
+  process.env.NEXT_PUBLIC_EVENT1_TIME || "18:00"
+)
 
 export function CountdownTimer() {
   const [timeLeft, setTimeLeft] = useState<TimeLeft>({

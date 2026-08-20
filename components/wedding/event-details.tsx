@@ -1,7 +1,7 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { MapPin, Calendar, Heart, Navigation } from "lucide-react"
+import { MapPin, Calendar, Clock, Heart, Navigation } from "lucide-react"
 import { QRCodeSVG } from "qrcode.react"
 
 interface EventCardProps {
@@ -9,6 +9,7 @@ interface EventCardProps {
   tag: string
   date: string
   year: string
+  time: string
   venue: string
   place: string
   mapsUrl: string
@@ -16,19 +17,33 @@ interface EventCardProps {
   delay?: number
 }
 
-function EventCard({ num, tag, date, year, venue, place, mapsUrl, calDate, delay = 0 }: EventCardProps) {
+function toCalDate(fullDate: string) {
+  const [day, month, year] = fullDate.split(".")
+  return `${year}${month}${day}`
+}
+
+function addHours(time: string, hours: number) {
+  const [h, m] = time.split(":").map(Number)
+  const total = h * 60 + m + hours * 60
+  const endH = Math.floor(total / 60) % 24
+  const endM = total % 60
+  return `${String(endH).padStart(2, "0")}${String(endM).padStart(2, "0")}`
+}
+
+function EventCard({ num, tag, date, year, time, venue, place, mapsUrl, calDate, delay = 0 }: EventCardProps) {
   const openMaps = () => window.open(mapsUrl, "_blank")
 
   const downloadIcs = () => {
     const title = `${process.env.NEXT_PUBLIC_GROOM_NAME || "Javlon"} & ${process.env.NEXT_PUBLIC_BRIDE_NAME || "Nargiza"} — ${venue}`
+    const startTime = time.replace(":", "") + "00"
     const ics = [
       "BEGIN:VCALENDAR",
       "VERSION:2.0",
       "PRODID:-//Wedding//UZ",
       "BEGIN:VEVENT",
       `UID:${calDate}-wedding@toy`,
-      `DTSTART;VALUE=DATE:${calDate}`,
-      `DTEND;VALUE=DATE:${String(Number(calDate) + 1)}`,
+      `DTSTART:${calDate}T${startTime}`,
+      `DTEND:${calDate}T${addHours(time, 3)}00`,
       `SUMMARY:${title}`,
       `LOCATION:${venue}, ${place}`,
       "DESCRIPTION:Nikoh marosimiga taklif",
@@ -81,6 +96,11 @@ function EventCard({ num, tag, date, year, venue, place, mapsUrl, calDate, delay
           <span className="block text-[#9a7430] tracking-[0.3em] mt-2" style={{ fontSize: "0.42em" }}>
             {year}
           </span>
+        </div>
+
+        <div className="text-[#9a7430] flex items-center gap-1.5 justify-center mt-3 font-medium" style={{ fontSize: "clamp(1rem,2.6vw,1.15rem)" }}>
+          <Clock className="w-4 h-4 flex-shrink-0" />
+          {time}
         </div>
 
         <div className="w-16 h-px bg-gradient-to-r from-transparent via-[#c9a050] to-transparent my-5" />
@@ -202,10 +222,11 @@ export function EventDetails() {
             tag="Birinchi marosim"
             date={process.env.NEXT_PUBLIC_EVENT1_DATE || "06.06"}
             year={process.env.NEXT_PUBLIC_EVENT1_YEAR || "2026-yil"}
+            time={process.env.NEXT_PUBLIC_EVENT1_TIME || "18:00"}
             venue={process.env.NEXT_PUBLIC_EVENT1_VENUE || "Oqsaroy to'yxonasi"}
             place={process.env.NEXT_PUBLIC_EVENT1_PLACE || "Buxoro viloyati, Romitan tumani"}
             mapsUrl={process.env.NEXT_PUBLIC_EVENT1_MAPS_URL || "https://www.google.com/maps/search/?api=1&query=Romitan+Buxoro"}
-            calDate="20260606"
+            calDate={toCalDate(process.env.NEXT_PUBLIC_EVENT1_FULL_DATE || "06.06.2026")}
             delay={0.2}
           />
           <EventCard
@@ -213,10 +234,11 @@ export function EventDetails() {
             tag="Ikkinchi marosim"
             date={process.env.NEXT_PUBLIC_EVENT2_DATE || "13.06"}
             year={process.env.NEXT_PUBLIC_EVENT2_YEAR || "2026-yil"}
+            time={process.env.NEXT_PUBLIC_EVENT2_TIME || "18:00"}
             venue={process.env.NEXT_PUBLIC_EVENT2_VENUE || "Shohsaroy to'yxonasi"}
             place={process.env.NEXT_PUBLIC_EVENT2_PLACE || "Navoiy viloyati, Karmana tumani"}
             mapsUrl={process.env.NEXT_PUBLIC_EVENT2_MAPS_URL || "https://www.google.com/maps/search/?api=1&query=Karmana+Navoiy"}
-            calDate="20260613"
+            calDate={toCalDate(process.env.NEXT_PUBLIC_EVENT2_FULL_DATE || "13.06.2026")}
             delay={0.4}
           />
         </div>

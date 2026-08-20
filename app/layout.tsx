@@ -16,9 +16,16 @@ const cormorant = Cormorant_Garamond({
   display: 'swap',
 })
 
+const groomName = process.env.NEXT_PUBLIC_GROOM_NAME || "Javlon"
+const brideName = process.env.NEXT_PUBLIC_BRIDE_NAME || "Nargiza"
+const event1Date = process.env.NEXT_PUBLIC_EVENT1_FULL_DATE || "06.06.2026"
+const event1Place = (process.env.NEXT_PUBLIC_EVENT1_PLACE || "Buxoro viloyati").split(",")[0]
+const event2Date = process.env.NEXT_PUBLIC_EVENT2_FULL_DATE || "13.06.2026"
+const event2Place = (process.env.NEXT_PUBLIC_EVENT2_PLACE || "Navoiy viloyati").split(",")[0]
+
 export const metadata: Metadata = {
-  title: 'Javlon & Nargiza | Nikoh Taklifnomasi',
-  description: "Sizni to'yimizga taklif qilamiz! 06.06.2026 — Buxoro | 13.06.2026 — Navoiy",
+  title: `${groomName} & ${brideName} | Nikoh Taklifnomasi`,
+  description: `Sizni to'yimizga taklif qilamiz! ${event1Date} — ${event1Place} | ${event2Date} — ${event2Place}`,
   generator: 'v0.app',
   icons: {
     icon: [

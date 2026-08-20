@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion"
 import { EnvelopeIntro } from "@/components/wedding/envelope-intro"
 import { HeroSection } from "@/components/wedding/hero-section"
 import { InvitationText } from "@/components/wedding/invitation-text"
+import { CountdownTimer } from "@/components/wedding/countdown-timer"
 import { EventDetails } from "@/components/wedding/event-details"
 import { Guestbook } from "@/components/wedding/guestbook"
 import { Footer } from "@/components/wedding/footer"
@@ -25,6 +26,7 @@ export default function WeddingInvitation() {
           >
             <HeroSection />
             <InvitationText />
+            <CountdownTimer />
             <EventDetails />
             <Guestbook />
             <Footer />
