@@ -23,10 +23,24 @@ const event1Place = (process.env.NEXT_PUBLIC_EVENT1_PLACE || "Buxoro viloyati").
 const event2Date = process.env.NEXT_PUBLIC_EVENT2_FULL_DATE || "13.06.2026"
 const event2Place = (process.env.NEXT_PUBLIC_EVENT2_PLACE || "Navoiy viloyati").split(",")[0]
 
+const siteTitle = `${groomName} & ${brideName} | Nikoh Taklifnomasi`
+const siteDescription = `Sizni to'yimizga taklif qilamiz! ${event1Date} — ${event1Place} | ${event2Date} — ${event2Place}`
+
 export const metadata: Metadata = {
-  title: `${groomName} & ${brideName} | Nikoh Taklifnomasi`,
-  description: `Sizni to'yimizga taklif qilamiz! ${event1Date} — ${event1Place} | ${event2Date} — ${event2Place}`,
+  title: siteTitle,
+  description: siteDescription,
   generator: 'v0.app',
+  openGraph: {
+    title: siteTitle,
+    description: siteDescription,
+    locale: 'uz_UZ',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary',
+    title: siteTitle,
+    description: siteDescription,
+  },
   icons: {
     icon: [
       {
