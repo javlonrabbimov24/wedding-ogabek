@@ -17,8 +17,8 @@ function parseTargetDate(fullDate: string, time: string) {
 }
 
 const targetDate = parseTargetDate(
-  process.env.NEXT_PUBLIC_EVENT1_FULL_DATE || "06.06.2026",
-  process.env.NEXT_PUBLIC_EVENT1_TIME || "18:00"
+  process.env.NEXT_PUBLIC_EVENT2_FULL_DATE || "13.06.2026",
+  process.env.NEXT_PUBLIC_EVENT2_TIME || "18:00"
 )
 
 export function CountdownTimer() {
