@@ -20,6 +20,7 @@ export function Guestbook() {
   const [entries, setEntries] = useState<GuestEntry[]>([])
   const [loading, setLoading] = useState(true)
   const [submitting, setSubmitting] = useState(false)
+  const [error, setError] = useState<string | null>(null)
   const latestT = useRef(0)
 
   useEffect(() => {
@@ -30,16 +31,18 @@ export function Guestbook() {
 
   async function fetchAll() {
     try {
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from("guestbook")
         .select("*")
         .order("t", { ascending: false })
-      if (data && data.length > 0) {
+      if (error) {
+        console.error("Guestbook fetchAll xatosi:", error)
+      } else if (data && data.length > 0) {
         setEntries(data)
         latestT.current = data[0].t
       }
-    } catch {
-      // Supabase sozlanmagan bo'lsa jimgina o'tadi
+    } catch (err) {
+      console.error("Guestbook fetchAll xatosi:", err)
     } finally {
       setLoading(false)
     }
@@ -47,17 +50,19 @@ export function Guestbook() {
 
   async function fetchNew() {
     try {
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from("guestbook")
         .select("*")
         .gt("t", latestT.current)
         .order("t", { ascending: false })
-      if (data && data.length > 0) {
+      if (error) {
+        console.error("Guestbook fetchNew xatosi:", error)
+      } else if (data && data.length > 0) {
         setEntries((prev) => [...data, ...prev])
         latestT.current = data[0].t
       }
-    } catch {
-      // xatolik
+    } catch (err) {
+      console.error("Guestbook fetchNew xatosi:", err)
     }
   }
 
@@ -65,13 +70,20 @@ export function Guestbook() {
     e.preventDefault()
     if (!name.trim() || !msg.trim() || submitting) return
     setSubmitting(true)
+    setError(null)
     try {
       const entry = { name: name.trim(), msg: msg.trim(), t: Date.now() }
-      await supabase.from("guestbook").insert(entry)
-      setName("")
-      setMsg("")
-    } catch {
-      // xatolik
+      const { error } = await supabase.from("guestbook").insert(entry)
+      if (error) {
+        console.error("Guestbook insert xatosi:", error)
+        setError("Tilak saqlanmadi. Birozdan so'ng qayta urinib ko'ring.")
+      } else {
+        setName("")
+        setMsg("")
+      }
+    } catch (err) {
+      console.error("Guestbook insert xatosi:", err)
+      setError("Tilak saqlanmadi. Birozdan so'ng qayta urinib ko'ring.")
     } finally {
       setSubmitting(false)
     }
@@ -154,6 +166,9 @@ export function Guestbook() {
               {submitting ? "Saqlanmoqda..." : "Tilak qoldirish"}
             </span>
           </motion.button>
+          {error && (
+            <p className="text-center text-sm text-red-500">{error}</p>
+          )}
         </motion.form>
 
         {loading ? (
